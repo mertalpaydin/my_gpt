@@ -18,14 +18,10 @@ def generate_text(model, start_text, num_tokens=30):
     print(f"\nGenerating from prompt: '{start_text}'")
     print("-" * 40)
     
-    # Generation loop
     for _ in range(num_tokens):
         with torch.no_grad():
-            # forward pass
-            logits = model(x)
-            
-            # take the logits at the last position
-            logits = logits[:, -1, :] # (B, vocab_size)
+            logits, _ = model(x)
+            logits = logits[:, -1, :]
             
             # get probabilities
             probs = F.softmax(logits, dim=-1)
